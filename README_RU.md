@@ -255,13 +255,7 @@
 
 
 ```sh
-
-
-
 passwd
-
-
-
 ```
 
 
@@ -303,37 +297,13 @@ passwd
 
 
 * `top` — мониторинг нагрузки на процессор и процессов в реальном времени.
-
-
-
 * `free -m` — вывод объема свободной и занятой оперативной памяти (в мегабайтах).
-
-
-
 * `ps` — список всех запущенных процессов и их PID.
-
-
-
 * `kill <PID>` / `killall <имя>` — завершение процесса по его номеру или имени.
-
-
-
 * `uptime` — время непрерывной работы платы и средняя загрузка (load average).
-
-
-
 * `dmesg` — просмотр сообщений ядра Linux (лог загрузки, события оборудования).
-
-
-
 * `uname -a` — вывод версии ядра и типа архитектуры (`xtensa`).
-
-
-
 * `cat /proc/cpuinfo` — детальные параметры процессора Xtensa LX7 (240 МГц).
-
-
-
 * `cat /proc/meminfo` — подробная статистика по распределению памяти.
 
 
@@ -347,33 +317,12 @@ passwd
 
 
 * `lsgpio` — отображение списка всех линий GPIO и их текущего статуса.
-
-
-
 * `gpio-event-mon` — мониторинг прерываний и входящих сигналов на ножках GPIO.
-
-
-
 * `gpio-hammer` — стресс-тестирование линий ввода/вывода.
-
-
-
 * `gpio-watch` — выполнение скрипта при изменении состояния пина.
-
-
-
 * `i2cdetect` — сканирование доступных шин I2C и обнаружение подключенных датчиков.
-
-
-
 * `i2cget` / `i2cset` — чтение и запись регистров I2C устройств.
-
-
-
 * `i2cdump` — полный дамп регистров I2C микросхемы.
-
-
-
 * `devmem <адрес>` — чтение и запись значений напрямую в физические регистры памяти SoC.
 
 
@@ -404,45 +353,15 @@ passwd
 
 
 * `ip` / `ifconfig` — просмотр и конфигурация сетевых интерфейсов (`lo`, `espsta0`).
-
-
-
 * `iw` — утилита управления и сканирования беспроводных сетей Wi-Fi.
-
-
-
 * `wpa_supplicant` — фоновый клиент авторизации WPA/WPA2 Personal/Enterprise.
-
-
-
 * `udhcpc` — DHCP-клиент для автоматического получения IP-адреса и шлюза.
-
-
-
 * `ping <хост>` — проверка сетевой связности (ICMP echo).
-
-
-
 * `traceroute <хост>` — трассировка маршрута к сетевому узлу.
-
-
-
 * `wget <URL>` — скачивание файлов из интернета по HTTP/HTTPS.
-
-
-
 * `telnet <хост>` — подключение по протоколу Telnet.
-
-
-
 * `ssh` / `dbclient` — клиент для безопасного подключения к удаленным серверам.
-
-
-
 * `scp` — безопасное копирование файлов по SSH.
-
-
-
 * `dropbear` — легковесный SSH-сервер (позволяет подключаться к ESP32 по сети).
 
 
@@ -453,28 +372,11 @@ passwd
 
 ### 📁 Работа с файлами и накопителем
 
-
-
 * `df -h` — информация о свободном дисковом пространстве на разделах.
-
-
-
 * `ls`, `cd`, `pwd` — просмотр содержимого каталогов и навигация.
-
-
-
 * `cp`, `mv`, `rm`, `mkdir`, `rmdir` — базовые операции с файлами и папками.
-
-
-
 * `tar`, `gzip`, `gunzip`, `unzip`, `xz` — создание и распаковка архивов.
-
-
-
 * `mount` / `umount` — монтирование и размонтирование файловых систем.
-
-
-
 * `fdisk`, `blkid` — просмотр информации о дисковых разделах.
 
 
@@ -484,23 +386,10 @@ passwd
 
 
 ### 📝 Текстовые редакторы и утилиты
-
-
-
-* `vi` — стандартный консольный редактор текста.
-
-
-
+* `nano` — стандартный консольный редактор текста.
 * `cat`, `head`, `tail`, `less`, `more` — просмотр содержимого текстовых файлов.
-
-
-
 * `grep`, `sed`, `awk`, `cut`, `sort`, `uniq` — поиск, фильтрация и обработка текста.
-
-
-
 * `hexdump`, `hexedit`, `xxd` — просмотр и редактирование данных в hex-формате.
-
 
 
 
@@ -540,13 +429,7 @@ passwd
 
 
 ```sh
-
-
-
 vi /etc/wpa_supplicant.conf
-
-
-
 ```
 
 
@@ -564,45 +447,16 @@ vi /etc/wpa_supplicant.conf
 
 
 ```sh
-
-
-
 cat << 'EOF' > /etc/wpa_supplicant.conf
-
-
-
 ap_scan=1
 
-
-
-
-
-
-
 network={
-
-
-
     ssid="MY_SSID"
-
-
-
     psk="MY_PASSWORD"
-
-
-
     key_mgmt=WPA-PSK
 
-
-
 }
-
-
-
 EOF
-
-
-
 ```
 
 
@@ -620,17 +474,8 @@ EOF
 
 
 ```sh
-
-
-
 killall wpa_supplicant
-
-
-
 wpa_supplicant -i espsta0 -c /etc/wpa_supplicant.conf -B
-
-
-
 ```
 
 
@@ -648,13 +493,7 @@ wpa_supplicant -i espsta0 -c /etc/wpa_supplicant.conf -B
 
 
 ```sh
-
-
-
 udhcpc -i espsta0
-
-
-
 ```
 
 
@@ -676,13 +515,7 @@ udhcpc -i espsta0
 
 
 ```sh
-
-
-
 ping -c 3 8.8.8.8
-
-
-
 ```
 
 
@@ -692,13 +525,7 @@ ping -c 3 8.8.8.8
 
 
 ```sh
-
-
-
 ping -c 3 google.com
-
-
-
 ```
 
 
@@ -712,13 +539,7 @@ ping -c 3 google.com
 
 
 ```sh
-
-
-
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
-
-
-
 ```
 
 
@@ -760,13 +581,7 @@ echo "nameserver 8.8.8.8" > /etc/resolv.conf
 
 
 ```sh
-
-
-
 dropbear -B
-
-
-
 ```
 
 
@@ -784,13 +599,7 @@ dropbear -B
 
 
    ```sh
-
-
-
    passwd
-
-
-
    ```
 
 
@@ -800,13 +609,7 @@ dropbear -B
 
 
    ```sh
-
-
-
    dropbear
-
-
-
    ```
 
 
@@ -824,13 +627,7 @@ dropbear -B
 
 
 ```sh
-
-
-
 ps | grep dropbear
-
-
-
 ```
 
 
@@ -852,13 +649,7 @@ ps | grep dropbear
 
 
    ```sh
-
-
-
    ip addr show espsta0
-
-
-
    ```
 
 
@@ -868,13 +659,7 @@ ps | grep dropbear
 
 
    ```powershell
-
-
-
    ssh root@<IP_АДРЕС_ESP32>
-
-
-
    ```
 
 
@@ -904,13 +689,7 @@ ps | grep dropbear
 
 
 ```powershell
-
-
-
 scp my_file.txt root@<IP_АДРЕС_ESP32>:/etc/
-
-
-
 ```
 
 
@@ -920,13 +699,7 @@ scp my_file.txt root@<IP_АДРЕС_ESP32>:/etc/
 
 
 ```powershell
-
-
-
 scp root@<IP_АДРЕС_ESP32>:/etc/greeting.txt .
-
-
-
 ```
 
 
@@ -944,29 +717,11 @@ scp root@<IP_АДРЕС_ESP32>:/etc/greeting.txt .
 
 
 ```sh
-
-
-
 cat << 'EOF' > /etc/init.d/S55dropbear
-
-
-
 #!/bin/sh
-
-
-
 dropbear -R -B
-
-
-
 EOF
-
-
-
 chmod +x /etc/init.d/S55dropbear
-
-
-
 ```
 
 
@@ -1005,31 +760,17 @@ chmod +x /etc/init.d/S55dropbear
 
 | Файл | Адрес во Flash | Назначение |
 
-
-
 |---|---|---|
-
-
 
 | `bootloader.bin` | `0x00000000` | Вторичный загрузчик ESP-IDF |
 
-
-
 | `partition-table.bin` | `0x00008000` | Таблица разделов |
-
-
 
 | `network_adapter.bin` | `0x00010000` | Драйвер Wi-Fi / IPC |
 
-
-
 | `etc.jffs2` | `0x000b0000` | Раздел конфигурации `/etc` (чтение/запись) |
 
-
-
 | `xipImage` | `0x00120000` | Ядро Linux 6.11 Execute-in-Place |
-
-
 
 | `rootfs.cramfs` | `0x00600000` | Корневая файловая система CramFS |
 
@@ -1043,7 +784,7 @@ chmod +x /etc/init.d/S55dropbear
 
 
 
-Запустите файл [`flash.bat`](file:///C:/Users/user/esp32_linux_bin/flash.bat) из текущей папки.
+Запустите файл flash.bat из текущей папки.
 
 
 
@@ -1056,13 +797,7 @@ chmod +x /etc/init.d/S55dropbear
 
 
 ```powershell
-
-
-
 python -m esptool --port COM3 --chip esp32s3 -b 921600 write_flash 0x00000000 bootloader.bin 0x00008000 partition-table.bin 0x00010000 network_adapter.bin 0x000b0000 etc.jffs2 0x00120000 xipImage 0x00600000 rootfs.cramfs
-
-
-
 ```
 
 
@@ -1076,16 +811,8 @@ python -m esptool --port COM3 --chip esp32s3 -b 921600 write_flash 0x00000000 bo
 
 
 ```powershell
-
-
-
 python C:\Users\user\esp32_linux_bin\terminal.py
-
-
-
 ```
-
-
 
 *(Параметры: 115200 бод, 8-N-1).*
 
