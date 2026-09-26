@@ -1,0 +1,73 @@
+#!/bin/sh
+# Start busybox httpd web server
+
+WEB_ROOT=/var/www
+HTTPD_PID=/var/run/httpd.pid
+PORT=8080
+
+case "$1" in
+    start)
+        echo -n "Starting web server on port $PORT... "
+        mkdir -p "$WEB_ROOT"
+        # Create default index page if not exists
+        if [ ! -f "$WEB_ROOT/index.html" ]; then
+            cat > "$WEB_ROOT/index.html" << 'HTML'
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ESP32-S3 Linux</title>
+    <style>
+        body { background: #1a1a2e; color: #eee; font-family: monospace; padding: 20px; }
+        h1 { color: #0f3460; text-shadow: 0 0 10px #00d4ff; }
+        .info { background: #16213e; padding: 15px; border-radius: 5px; border: 1px solid #0f3460; }
+        a { color: #00d4ff; }
+    </style>
+</head>
+<body>
+    <h1>ESP32-S3 Linux Web Server</h1>
+    <div class="info">
+        <p><b>Hardware:</b> ESP32-S3 (Xtensa LX7 @ 240MHz)</p>
+        <p><b>OS:</b> Linux 6.11.0 (NO-MMU, FDPIC)</p>
+        <p><b>RAM:</b> 8MB PSRAM</p>
+        <p><b>Flash:</b> 16MB</p>
+    </div>
+    <p><a href="/cgi-bin/status.sh">System Status</a></p>
+</body>
+</html>
+HTML
+        fi
+        # Create CGI dir and status script
+        mkdir -p "$WEB_ROOT/cgi-bin"
+        if [ ! -f "$WEB_ROOT/cgi-bin/status.sh" ]; then
+            cat > "$WEB_ROOT/cgi-bin/status.sh" << 'CGI'
+#!/bin/sh
+echo "Content-type: text/html"
+echo ""
+echo "<html><head><title>Status</title></head><body><pre>"
+echo "=== System Status ==="
+uptime
+echo ""
+free
+echo ""
+df -h
+echo "</pre></body></html>"
+CGI
+            chmod +x "$WEB_ROOT/cgi-bin/status.sh"
+        fi
+        httpd -p "$PORT" -h "$WEB_ROOT" && echo "OK" || echo "FAILED"
+        ;;
+    stop)
+        echo -n "Stopping web server... "
+        killall httpd 2>/dev/null && echo "OK" || echo "not running"
+        ;;
+    restart)
+        $0 stop
+        sleep 1
+        $0 start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac

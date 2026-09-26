@@ -1,0 +1,15 @@
+# Releases and binaries (publish to GitHub Releases instead)
+releases/
+*.zip
+*.bin
+*.cramfs
+xipImage
+*.jffs2
+
+# Python
+__pycache__/
+*.py[cod]
+
+# OS artifacts
+.DS_Store
+Thumbs.db

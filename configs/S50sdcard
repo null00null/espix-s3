@@ -1,0 +1,45 @@
+#!/bin/sh
+# Mount SD card and load packages from it
+
+MOUNT_POINT=/mnt/sd
+SD_DEVICE=/dev/mmcblk0
+
+case "$1" in
+    start)
+        echo -n "Mounting SD card... "
+        if [ -b "$SD_DEVICE" ]; then
+            mkdir -p "$MOUNT_POINT"
+            mount -t vfat -o rw,noatime,utf8 "$SD_DEVICE" "$MOUNT_POINT" 2>/dev/null || \
+            mount -t ext2 -o rw,noatime "$SD_DEVICE" "$MOUNT_POINT" 2>/dev/null || \
+            mount -t ext3 -o rw,noatime "$SD_DEVICE" "$MOUNT_POINT" 2>/dev/null
+            if mountpoint -q "$MOUNT_POINT"; then
+                echo "OK"
+                # Add SD card bin dirs to PATH
+                if [ -d "$MOUNT_POINT/bin" ]; then
+                    export PATH="$PATH:$MOUNT_POINT/bin"
+                    echo "export PATH=\"\$PATH:$MOUNT_POINT/bin\"" >> /etc/profile
+                fi
+                # Load packages from SD card
+                if [ -f "$MOUNT_POINT/packages.sh" ]; then
+                    sh "$MOUNT_POINT/packages.sh"
+                fi
+                # Copy web content if present
+                if [ -d "$MOUNT_POINT/www" ]; then
+                    cp -r "$MOUNT_POINT/www/"* /var/www/ 2>/dev/null
+                fi
+            else
+                echo "FAILED (no SD card?)"
+            fi
+        else
+            echo "SKIP (no device)"
+        fi
+        ;;
+    stop)
+        echo -n "Unmounting SD card... "
+        umount "$MOUNT_POINT" 2>/dev/null && echo "OK" || echo "not mounted"
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac
