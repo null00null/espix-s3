@@ -117,10 +117,10 @@ In v2.0, SD Card support is configured via SPI bit-bang to avoid conflicts with 
 
 | SD Module Pin | ESP32-S3 GPIO | Function |
 |---|---|---|
-| **MISO / DO** | `GPIO 35` | SPI MISO |
-| **SCK / CLK** | `GPIO 36` | SPI Clock |
-| **MOSI / DI** | `GPIO 37` | SPI MOSI |
-| **CS** | `GPIO 38` | Chip Select |
+| **MISO / DO** | `GPIO 1` | SPI MISO |
+| **SCK / CLK** | `GPIO 2` | SPI Clock |
+| **MOSI / DI** | `GPIO 4` | SPI MOSI |
+| **CS** | `GPIO 5` | Chip Select |
 | **VCC** | `3.3V` | Power |
 | **GND** | `GND` | Ground |
 
@@ -140,6 +140,28 @@ http://<ESP32_IP>:8080/
 Included features:
 * Real-time hardware status page (`/cgi-bin/status.sh`).
 * Host static HTML/JS from `/var/www` or `/mnt/sd/www`.
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+🔹 Basic Questions
+Q: Will this run on a standard ESP32, ESP32-C3, or ESP32-S2? A: No. This specific distribution is compiled for the ESP32-S3 (Xtensa LX7). Furthermore, it requires exactly 16 MB of SPI Flash and 8 MB of Octal PSRAM (e.g., the N16R8 module).
+
+Q: What is the default login and password? A: The default login is root. There is no password. You can set one later using the passwd command.
+
+Q: What does NO-MMU mean? A: The ESP32-S3 microcontroller lacks a hardware Memory Management Unit (MMU) capable of full virtual memory management. Linux runs in a specialized mode using physical memory addresses. We use the Xtensa FDPIC ABI, which allows position-independent code and dynamic shared libraries to run efficiently without an MMU.
+
+Q: Can I run standard Linux binaries (e.g., from Ubuntu/Debian)? A: No. You cannot run ARM, x86, or standard Xtensa Linux binaries. Every program must be cross-compiled specifically for the xtensa-esp32s3-linux-uclibcfdpic toolchain.
+
+🔹 Advanced & Troubleshooting
+Q: Why does MicroPython crash with a nommu: Allocation of length ... failed error or Segfault? A: Because there is no virtual memory, physical memory becomes fragmented over time. MicroPython tries to allocate a massive contiguous block (~1 MB) for its garbage collector heap at startup. If a contiguous block of that size isn't available, the allocation fails. Fix: Launch MicroPython with an explicit heap size: micropython -X heapsize=512k. (Note: v2.0 includes an alias for this by default).
+
+Q: Why does my board boot-loop with an External RAM failed memory test! error when I connect hardware? A: On ESP32-S3 N16R8 boards, GPIOs 33, 34, 35, 36, and 37 are internally hardwired to the high-speed Octal PSRAM chip. If you connect external sensors or an SD card to these pins, you corrupt the RAM bus. This is why our SD card implementation uses safe pins like GPIO 1, 2, 4, and 5.
+
+Q: Can I use both CPU cores of the ESP32-S3? A: Currently, the Linux kernel runs on Core 0 (Single-core mode), as SMP (Symmetric Multiprocessing) is not fully supported upstream for this architecture yet. However, Core 1 isn't sitting idle—it is utilized by the ESP-IDF firmware to run the ESP-Hosted Wi-Fi/Bluetooth network co-processor!
+
+Q: What is XIP and why is the kernel image called xipImage? A: XIP (Execute-In-Place) means the CPU fetches and executes kernel instructions directly from the SPI Flash memory (mapped at hardware address 0x42120000), rather than copying the kernel into RAM first. This saves megabytes of precious PSRAM exclusively for your user-space applications and system caches.
 
 ---
 
