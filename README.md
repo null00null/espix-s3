@@ -30,6 +30,7 @@ It runs dynamically-linked userland binaries with shared libraries via **Xtensa 
 |---|---|---|
 | **v1.0 (Base)** | Minimal footprint, Linux 6.11, Wi-Fi, SSH, UART, ~5.5 MB free RAM. | Lightweight headless IoT, micro-routers, benchmarks. |
 | **v2.0 (Dev & Storage)** | Includes **MicroPython 1.22**, **Nano 8.1**, **BusyBox HTTPD** (port 8080), **SD Card** (FAT32/EXT2/EXT3) auto-mount. | On-device scripting, hacking, web dashboards, persistent logging. |
+| **v2.1 (Update)** | Check [Releases](../../releases) tab for more. | |
 
 > 📥 Download ready-to-flash binary packages from the [Releases](../../releases) tab!
 
